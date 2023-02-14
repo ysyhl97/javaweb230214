@@ -2,8 +2,8 @@
 *.class
 *.log
 *.iml
-.idea
-.out
+.idea/
+out/
 *.jar
 *.war
 *.nar
