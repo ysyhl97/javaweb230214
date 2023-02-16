@@ -3,17 +3,14 @@ package com.atguigu.fruit.servlet;
 import com.atguigu.fruit.dao.FruitDao;
 import com.atguigu.fruit.dao.impl.FruitDaoImpl;
 import com.atguigu.fruit.pojo.Fruit;
-import com.atguigu.myssm.myspringmvc.ViewBaseServlet;
+import com.atguigu.myssm.myspringmvc.DispatcherServlet;
 import com.atguigu.myssm.util.StringUtil;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -28,59 +25,11 @@ import java.util.List;
  */
 
 @WebServlet("/fruit.do")
-public class FruitServlet extends ViewBaseServlet {
+public class FruitServlet extends DispatcherServlet {
 
     private FruitDao fruitDao = new FruitDaoImpl();
 
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8");
 
-        String operate = request.getParameter("operate");
-        if (StringUtil.isEmpty(operate)) {
-            operate = "index";
-        }
-
-        Method[] methods = this.getClass().getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
-            System.out.println("methods = " + methods[i].getName());
-        }
-        for (Method method : methods) {
-            String methodName = method.getName();
-            if (operate == methodName){
-                try {
-                    method.setAccessible(true);
-                    method.invoke(this,request,response);
-                    return;
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-//        switch (operate) {
-//            case "index":
-//                index(request, response);
-//                break;
-//            case "add":
-//                add(request, response);
-//                break;
-//            case "edit":
-//                edit(request, response);
-//                break;
-//            case "delete":
-//                delete(request, response);
-//                break;
-//            case "update":
-//                update(request, response);
-//                break;
-//            default:
-//
-//        }
-
-    }
 
     /**
      * index方法用来代替IndexServlet
@@ -88,7 +37,6 @@ public class FruitServlet extends ViewBaseServlet {
      * @param request
      * @param response
      * @throws
-     *
      */
     private void index(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
