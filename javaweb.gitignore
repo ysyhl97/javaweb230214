@@ -1,8 +1,8 @@
 *.iml
-/.idea
+.idea
 /out
 /lib
 /lib-thymeleaf
-/**/target
-/**/*.iml
+target
+
 
