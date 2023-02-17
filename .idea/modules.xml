@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/javaweb230128.iml" filepath="$PROJECT_DIR$/.idea/javaweb230128.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pro15-fruit2.0-mvc-dispatcherservlet/pro15-fruit2.0-mvc-dispatcherservlet.iml" filepath="$PROJECT_DIR$/pro15-fruit2.0-mvc-dispatcherservlet/pro15-fruit2.0-mvc-dispatcherservlet.iml" />
+    </modules>
+  </component>
+</project>
