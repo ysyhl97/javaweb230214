@@ -26,11 +26,15 @@ public class ViewBaseServlet extends HttpServlet {
 
    private TemplateEngine templateEngine;
 
-   @Override
-   public void init() throws ServletException {
+   private  ServletContext servletContext;
+
+
+   public void init(ServletContext servletContext) throws ServletException {
+
+      this.servletContext = servletContext;
 
       // 1.获取ServletContext对象
-      ServletContext servletContext = this.getServletContext();
+//      ServletContext servletContext = this.getServletContext();
 
       // 2.创建Thymeleaf解析器对象
       ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans>
+    <!--    将servletContextPath中fruit和对应的Controller配对-->
+    <bean id="fruit" class="com.atguigu.fruit.controller.FruitController"/>
+</beans>
