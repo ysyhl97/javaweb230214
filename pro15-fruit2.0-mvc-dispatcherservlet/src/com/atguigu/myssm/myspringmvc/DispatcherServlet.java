@@ -41,10 +41,10 @@ public class DispatcherServlet extends ViewBaseServlet {
     }
 
 
-        @Override
-        public void init() throws ServletException {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("applicationContext.xml");
+    @Override
+    public void init() throws ServletException {
         try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("applicationContext.xml");
             //1.创建DocumentBuilderFactory
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             // 创建documentBuilder对象
@@ -61,7 +61,7 @@ public class DispatcherServlet extends ViewBaseServlet {
                 Class<?> aClass = Class.forName(className);
                 Object newInstance = aClass.newInstance();
                 Method method = aClass.getDeclaredMethod("setServletContext", ServletContext.class);
-                method.invoke(newInstance,this.getServletContext());
+                method.invoke(newInstance, this.getServletContext());
                 beanMap.put(id, newInstance);
             }
         } catch (ParserConfigurationException e) {
@@ -81,39 +81,41 @@ public class DispatcherServlet extends ViewBaseServlet {
         } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
         }
-        }
+    }
 
-     @Override
+    @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
+
+
+        String servletPath = request.getServletPath();
+        int lastIndexOf = servletPath.lastIndexOf(".do");
+        servletPath = servletPath.substring(1, lastIndexOf);
+
+        Object controllerBeanObject = beanMap.get(servletPath);
 
         String operate = request.getParameter("operate");
         if (StringUtil.isEmpty(operate)) {
             operate = "index";
         }
 
-        String servletPath = request.getServletPath();
-        int lastIndexOf = servletPath.lastIndexOf(".do");
-        servletPath = servletPath.substring(1, lastIndexOf);
-
-         Object beanObject = beanMap.get(servletPath);
-
-
-        Method[] methods = beanObject.getClass().getDeclaredMethods();
-        for (Method method : methods) {
-            String methodName = method.getName();
-            if (methodName.equals(operate)) {
-                method.setAccessible(true);
-                try {
-                    method.invoke(this, request, response);
-                    return;
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                }
+        try {
+          Method  methods = controllerBeanObject.getClass().getDeclaredMethod(operate, HttpServletRequest.class, HttpServletResponse.class);
+            if (methods != null) {
+                methods.setAccessible(true);
+                methods.invoke(controllerBeanObject,request,response);
+            }else {
+                throw new RuntimeException("operate值非法");
             }
+
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
+
     }
 }
 
