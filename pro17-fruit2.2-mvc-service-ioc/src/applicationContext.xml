@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans>
+    <bean id="fruitDao" class="com.atguigu.fruit.dao.impl.FruitDaoImpl"/>
+    <bean id="fruitService" class="com.atguigu.fruit.biz.impl.FruitServiceImpl">
+        <property name="fruitDao" ref="fruitDao"></property>
+    </bean>
+    <!--    将servletContextPath中fruit和对应的Controller配对-->
+    <bean id="fruit" class="com.atguigu.fruit.controller.FruitController">
+        <property name="fruitService" ref="fruitService"></property>
+    </bean>
+</beans>
