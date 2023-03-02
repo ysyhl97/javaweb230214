@@ -41,7 +41,7 @@ public class FruitDaoImpl extends BaseDAO<Fruit> implements FruitDao {
 
     @Override
     public void updateFruitById(Fruit fruit)  {
-        String sql = "updat t_fruit set fname=?,price=?,fcount=?,remark=? where fid=?";
+        String sql = "update t_fruit set fname=?,price=?,fcount=?,remark=? where fid=?";
         executeUpdate(sql, fruit.getFname(), fruit.getPrice(), fruit.getFcount(), fruit.getRemark(), fruit.getFid());
     }
 
