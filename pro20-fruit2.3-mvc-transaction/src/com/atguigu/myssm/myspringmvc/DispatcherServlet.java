@@ -63,47 +63,46 @@ public class DispatcherServlet extends ViewBaseServlet {
         if (StringUtil.isEmpty(operate)) {
             operate = "index";
         }
+        try {
+            //获取controller中的所有方法
+            Method[] methods = controllerBeanObject.getClass().getDeclaredMethods();
+            //遍历每一个方法
+            for (Method method : methods) {
+                //根据operate来调用对应的方法
+                if (operate.equals(method.getName())) {
 
-        //获取controller中的所有方法
-        Method[] methods = controllerBeanObject.getClass().getDeclaredMethods();
-        //遍历每一个方法
-        for (Method method : methods) {
-            //根据operate来调用对应的方法
-            if (operate.equals(method.getName())) {
+                    //获取方法的所有参数
+                    Parameter[] parameters = method.getParameters();
+                    //创建数组,用来存放方法参数值
+                    Object[] parameterValues = new Object[parameters.length];
+                    //遍历方法中的每个参数
+                    for (int i = 0; i < parameters.length; i++) {
+                        //依次获取方法中的参数
+                        Parameter parameter = parameters[i];
+                        //获取参数名
+                        String parameterName = parameter.getName();
+                        if ("request".equals(parameterName)) {
+                            parameterValues[i] = request;
+                        } else if ("response".equals(parameterName)) {
+                            parameterValues[i] = response;
+                        } else if ("session".equals(parameterName)) {
+                            parameterValues[i] = request.getSession();
+                        } else {
+                            //通过方法的参数名,来获取请求中的对应参数值
+                            String parameterValue = request.getParameter(parameterName);
+                            String typeName = parameter.getType().getName();
 
-                //获取方法的所有参数
-                Parameter[] parameters = method.getParameters();
-                //创建数组,用来存放方法参数值
-                Object[] parameterValues = new Object[parameters.length];
-                //遍历方法中的每个参数
-                for (int i = 0; i < parameters.length; i++) {
-                    //依次获取方法中的参数
-                    Parameter parameter = parameters[i];
-                    //获取参数名
-                    String parameterName = parameter.getName();
-                    if ("request".equals(parameterName)) {
-                        parameterValues[i] = request;
-                    } else if ("response".equals(parameterName)) {
-                        parameterValues[i] = response;
-                    } else if ("session".equals(parameterName)) {
-                        parameterValues[i] = request.getSession();
-                    } else {
-                        //通过方法的参数名,来获取请求中的对应参数值
-                        String parameterValue = request.getParameter(parameterName);
-                        String typeName = parameter.getType().getName();
-
-                        Object parameterObj = parameterValue;
-                        if (parameterObj != null) {
-                            if ("java.lang.Integer".equals(typeName)) {
-                                parameterObj = Integer.parseInt(parameterValue);
+                            Object parameterObj = parameterValue;
+                            if (parameterObj != null) {
+                                if ("java.lang.Integer".equals(typeName)) {
+                                    parameterObj = Integer.parseInt(parameterValue);
+                                }
                             }
+
+                            parameterValues[i] = parameterObj;
                         }
 
-                        parameterValues[i] = parameterObj;
                     }
-
-                }
-                try {
                     method.setAccessible(true);
                     Object returnObj = method.invoke(controllerBeanObject, parameterValues);
                     String returnStr = (String) returnObj;
@@ -114,15 +113,16 @@ public class DispatcherServlet extends ViewBaseServlet {
                     } else {
                         super.processTemplate(returnStr, request, response);
                     }
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException(e);
                 }
             }
 
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DispatcherServletException("dispatcherServlet出错了....");
         }
+
+
     }
 }
+
 

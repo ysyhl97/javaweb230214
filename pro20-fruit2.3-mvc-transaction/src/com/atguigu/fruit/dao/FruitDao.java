@@ -2,6 +2,7 @@ package com.atguigu.fruit.dao;
 
 import com.atguigu.fruit.pojo.Fruit;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -30,28 +31,28 @@ public interface FruitDao {
      * @param id 水果id
      * @return 水果对象
      */
-    Fruit getFruitById(Integer id);
+    Fruit getFruitById(Integer id) ;
 
     /**
      * 根据id修改库存信息
      *
      * @param fruit
      */
-    void updateFruitById(Fruit fruit);
+    void updateFruitById(Fruit fruit) ;
 
     /**
      * 根据id删除fruit
      *
      * @param id
      */
-    void deleteFruitById(Integer id);
+    void deleteFruitById(Integer id) ;
 
     /**
      * 添加fruit
      *
      * @param fruit
      */
-    void addFruit(Fruit fruit);
+    void addFruit(Fruit fruit) ;
 
 
     /**
@@ -59,7 +60,7 @@ public interface FruitDao {
      * @param keyword 查询的关键字
      * @return
      */
-    Integer getFruitCount(String keyword);
+    Integer getFruitCount(String keyword) ;
 
 
 }

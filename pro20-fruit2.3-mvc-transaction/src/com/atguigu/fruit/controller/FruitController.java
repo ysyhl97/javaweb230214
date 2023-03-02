@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class FruitController {
@@ -17,7 +18,7 @@ public class FruitController {
 
     private FruitService fruitService = null;
 
-    private String update(Integer fid, String fname, Integer price, Integer fcount, String remark) throws ServletException, IOException {
+    private String update(Integer fid, String fname, Integer price, Integer fcount, String remark)  {
 
         //3.执行更新
         fruitService.updateFruit(new Fruit(fid, fname, price, fcount, remark));
@@ -26,7 +27,7 @@ public class FruitController {
         return "redirect:fruit.do";
     }
 
-    private String edit(Integer fid, HttpServletRequest request) throws IOException, ServletException {
+    private String edit(Integer fid, HttpServletRequest request) {
 
         if (fid != null) {
             Fruit fruit = fruitService.getFruitById(fid);
@@ -37,7 +38,7 @@ public class FruitController {
 
     }
 
-    private String delete(Integer fid) throws IOException, ServletException {
+    private String delete(Integer fid)  {
         if (fid != null) {
             fruitService.deleteFruit(fid);
             return "redirect:fruit.do";
@@ -45,7 +46,7 @@ public class FruitController {
         return "error";
     }
 
-    private String add(String fname, Integer price, Integer fcount, String remark) throws ServletException, IOException {
+    private String add(String fname, Integer price, Integer fcount, String remark)  {
         Fruit fruit = new Fruit(null, fname, price, fcount, remark);
         fruitService.addFruit(fruit);
         return "redirect:fruit.do";

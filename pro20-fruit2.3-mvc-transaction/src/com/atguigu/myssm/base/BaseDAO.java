@@ -40,39 +40,22 @@ public abstract class BaseDAO<T> {
         Type[] actualTypeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
         //获取到的<T>中的T的真实的类型
         Type actualType = actualTypeArguments[0];
+
         try {
             entityClass = Class.forName(actualType.getTypeName());
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            throw new DaoException("dao层BaseDAO错误....");
         }
+
     }
 
     protected Connection getConn() {
-        try {
-            //1.加载驱动
-            Class.forName(DRIVER);
-            //2.通过驱动管理器获取连接对象
-            return DriverManager.getConnection(URL, USER, PWD);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return ConnectionUtil.getConn();
     }
 
     protected void close(ResultSet rs, PreparedStatement psmt, Connection conn) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-            if (psmt != null) {
-                psmt.close();
-            }
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     //给预处理命令对象设置参数
@@ -93,7 +76,7 @@ public abstract class BaseDAO<T> {
             if (insertFlag) {
                 psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             } else {
-                psmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+                psmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             }
             setParams(psmt, params);
             int count = psmt.executeUpdate();
@@ -103,12 +86,11 @@ public abstract class BaseDAO<T> {
                 return ((Long) rs.getLong(1)).intValue();
             }
             return count;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            close(rs, psmt, conn);
+            throw new DaoException("dao层executeUpdate错误....");
         }
-        return 0;
+
     }
 
     //通过反射技术给obj对象的property属性赋propertyValue值
@@ -121,15 +103,17 @@ public abstract class BaseDAO<T> {
                 field.setAccessible(true);
                 field.set(obj, propertyValue);
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            throw new DaoException("dao层setValue错误....");
         }
     }
 
     //执行复杂查询，返回例如统计结果
     protected Object[] executeComplexQuery(String sql, Object... params) {
+
+        conn = getConn();
         try {
-            conn = getConn();
             psmt = conn.prepareStatement(sql);
             setParams(psmt, params);
             rs = psmt.executeQuery();
@@ -149,18 +133,18 @@ public abstract class BaseDAO<T> {
                 }
                 return columnValueArr;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            close(rs, psmt, conn);
+            throw new DaoException("dao层executeComplexQuery错误.......");
         }
         return null;
     }
 
     //执行查询，返回单个实体对象
     protected T load(String sql, Object... params) {
+
+        conn = getConn();
         try {
-            conn = getConn();
             psmt = conn.prepareStatement(sql);
             setParams(psmt, params);
             rs = psmt.executeQuery();
@@ -182,14 +166,9 @@ public abstract class BaseDAO<T> {
                 }
                 return entity;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } finally {
-            close(rs, psmt, conn);
+            throw new DaoException("dao层load错误.......");
         }
         return null;
     }
@@ -198,8 +177,9 @@ public abstract class BaseDAO<T> {
     //执行查询，返回List
     protected List<T> executeQuery(String sql, Object... params) {
         List<T> list = new ArrayList<>();
+
+        conn = getConn();
         try {
-            conn = getConn();
             psmt = conn.prepareStatement(sql);
             setParams(psmt, params);
             rs = psmt.executeQuery();
@@ -221,16 +201,12 @@ public abstract class BaseDAO<T> {
                 }
                 list.add(entity);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } finally {
-            close(rs, psmt, conn);
+            throw new DaoException("dao层executeQuery错误.....");
         }
         return list;
     }
+
 }
 
