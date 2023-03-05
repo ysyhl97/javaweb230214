@@ -48,7 +48,16 @@ public class DispatcherServlet extends ViewBaseServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        beanFactory = new ClassPathXmlApplicationContext();
+        //应该将IOC容器的初始化提前到servletContext初始化时
+        //  beanFactory = new ClassPathXmlApplicationContext();
+
+        ServletContext application = getServletContext();
+        Object beanFactoryObj = application.getAttribute("beanFactory");
+        if (beanFactoryObj != null) {
+            beanFactory = ((BeanFactory) beanFactoryObj);
+        }
+
+
     }
 
     @Override

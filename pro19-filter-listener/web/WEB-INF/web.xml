@@ -13,5 +13,7 @@
 <!--        <url-pattern>/demo02.do</url-pattern>-->
 <!--    </filter-mapping>-->
 
-
+<listener>
+    <listener-class>com.atguigu.listener.MyServletContextListener</listener-class>
+</listener>
 </web-app>
