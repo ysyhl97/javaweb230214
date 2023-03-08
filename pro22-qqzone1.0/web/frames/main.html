@@ -17,13 +17,14 @@
             <th>日期</th>
             <th>操作</th>
         </tr>
-        <tr th:unless="${#lists.isEmpty(session.userBasic.topicList)}" th:each="topic : ${session.userBasic.topicList}">
+        <tr th:unless="${#lists.isEmpty(session.friend.topicList)}" th:each="topic : ${session.friend.topicList}">
             <td th:text="${topic.id}">1</td>
-            <td class="left"><a href="detail.html" th:text="${topic.title}">我爱中华</a></td>
+            <td class="left"><a th:href="@{|topic.do?operate=topicDetail&id=${topic.id}|}" th:text="${topic.title}" target="_top">我爱中华</a></td>
             <td th:text="${topic.topicDate}">2022-04-27 20:34:11</td>
             <td>删除</td>
         </tr>
-        <tr th:if="${#lists.isEmpty(session.userBasic.topicList)}" th:text="暂无日志">
+        <tr th:if="${#lists.isEmpty(session.friend.topicList)}" >
+            <td colspan="4" th:text="暂无日志"></td>
         </tr>
     </table>
 </div>

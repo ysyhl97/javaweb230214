@@ -18,6 +18,7 @@ public class Reply {
     private LocalDateTime replyDate;
     private UserBasic author; //n:1
     private Topic topic; //n:1
+    private HostReply hostReply; //1:1
 
     public HostReply getHostReply() {
         return hostReply;
@@ -27,7 +28,6 @@ public class Reply {
         this.hostReply = hostReply;
     }
 
-    private HostReply hostReply; //1:1
 
     public Integer getId() {
         return id;
@@ -70,5 +70,17 @@ public class Reply {
     }
 
     public Reply() {
+    }
+
+    public Reply(Integer id, String content, LocalDateTime replyDate, UserBasic author, Topic topic) {
+        this.id = id;
+        this.content = content;
+        this.replyDate = replyDate;
+        this.author = author;
+        this.topic = topic;
+    }
+
+    public Reply(Integer id) {
+        this.id = id;
     }
 }

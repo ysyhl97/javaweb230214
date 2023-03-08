@@ -1,6 +1,7 @@
 package com.atguigu.myssm.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -13,7 +14,7 @@ import java.io.IOException;
  * @Create 2023/3/5 16:45
  * @Version 1.0
  */
-
+@WebFilter("*.do")
 public class CharacterEncodingFilter implements Filter {
 
     private String encoding = "utf-8";

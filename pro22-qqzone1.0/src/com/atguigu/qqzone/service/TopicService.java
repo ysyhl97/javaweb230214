@@ -18,6 +18,15 @@ import java.util.List;
 public interface TopicService {
 
     List<Topic> getTopicList(UserBasic userBasic);
+    Topic getTopicById(Integer id);
 
+    /**
+     * 根据id获取获取指定Topic信息,包含这个Topic关联的author信息
+     * @param id
+     * @return
+     */
+    Topic getTopic(Integer id);
+
+    void deleteTopic(Integer topicId);
 
 }

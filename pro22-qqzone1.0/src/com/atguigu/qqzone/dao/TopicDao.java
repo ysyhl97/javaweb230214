@@ -31,9 +31,9 @@ public interface TopicDao {
 
    /**
     * 删除日志
-    * @param topic
+    * @param topicId
     */
-   void deleteTopic(Topic topic);
+   void deleteTopic(Integer topicId);
 
    /**
     * 根据id查询特定日志

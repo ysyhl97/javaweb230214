@@ -32,6 +32,6 @@ public class UserBasicDaoImpl extends BaseDao<UserBasic> implements UserBasicDao
     @Override
     public UserBasic getUserBasicById(Integer id) {
         String sql = "select * from t_user_basic where id = ?";
-        return ((UserBasic) load(sql, id));
+        return  load(sql, id);
     }
 }

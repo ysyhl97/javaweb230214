@@ -36,4 +36,9 @@ public class UserBasicServiceImpl implements UserBasicService {
       }
       return friendList;
    }
+
+   @Override
+   public UserBasic getUserBasicById(Integer id) {
+      return userBasicDao.getUserBasicById(id);
+   }
 }

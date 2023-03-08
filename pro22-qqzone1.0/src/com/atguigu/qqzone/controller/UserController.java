@@ -5,6 +5,7 @@ import com.atguigu.qqzone.pojo.UserBasic;
 import com.atguigu.qqzone.service.TopicService;
 import com.atguigu.qqzone.service.UserBasicService;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -17,7 +18,6 @@ import java.util.List;
  * @Create 2023/3/3 11:54
  * @Version 1.0
  */
-
 public class UserController {
 
     private UserBasicService userBasicService;
@@ -40,10 +40,29 @@ public class UserController {
 
             // 将userBasic对象存储到session域中
             session.setAttribute("userBasic", userBasic);
+            // 为了实现跳转回自己空间,需要区分自己和别人的空间
+            // 添加friend这个key,用来保存当前进入的是谁的空间
+            // 上面的userBasic这个key,用来保存登录者的信息
+            session.setAttribute("friend",userBasic);
 
             return "index";
         } else {
             return "login";
         }
+    }
+
+    public String friend(Integer id,HttpSession session){
+        UserBasic friend = userBasicService.getUserBasicById(id);
+
+        //获取好友列表
+        List<UserBasic> friendList = userBasicService.getFriendList(friend);
+        // 获取日志列表
+        List<Topic> topicList = topicService.getTopicList(friend);
+
+        friend.setFriendList(friendList);
+        friend.setTopicList(topicList);
+
+        session.setAttribute("friend",friend);
+        return "index";
     }
 }

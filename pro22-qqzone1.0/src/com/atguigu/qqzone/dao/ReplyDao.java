@@ -32,7 +32,15 @@ public interface ReplyDao {
 
    /**
     * 删除回复
-    * @param reply
+    * @param replyId
     */
-   void deleteReply(Reply reply);
+   void deleteReplyById(String replyId);
+
+   /**
+    * 根据replyId获取reply
+    *
+    * @param replyId
+    * @return
+    */
+   Reply getReply(String replyId);
 }

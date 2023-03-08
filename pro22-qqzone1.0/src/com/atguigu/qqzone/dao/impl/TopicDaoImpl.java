@@ -31,9 +31,9 @@ public class TopicDaoImpl extends BaseDao<Topic> implements TopicDao {
     }
 
     @Override
-    public void deleteTopic(Topic topic) {
+    public void deleteTopic(Integer topicId) {
         String sql = "delete from t_topic where id = ?";
-        load(sql, topic.getId());
+        executeUpdate(sql, topicId);
     }
 
     @Override

@@ -60,7 +60,7 @@ public class DispatcherServlet extends ViewBaseServlet {
 
 
         String servletPath = request.getServletPath();
-        int lastIndexOf = servletPath.lastIndexOf(".do");
+         int lastIndexOf = servletPath.lastIndexOf(".do");
         servletPath = servletPath.substring(1, lastIndexOf);
 
         // 从beanMap集合中获取servlet初始化时加载的bean
@@ -92,22 +92,21 @@ public class DispatcherServlet extends ViewBaseServlet {
                         parametersValue[i] = response;
                     } else if ("session".equals(parameterName)) {
                         parametersValue[i] = request.getSession();
-                    }
+                    }else{
+                        // 如果不是就从请求中获取请求参数
+                        String parameterValue = request.getParameter(parameterName);
+                        // 获取method参数类型名称
+                        String typeName = parameters[i].getType().getName();
 
-                    // 如果不是就从请求中获取请求参数
-                    String parameterValue = request.getParameter(parameterName);
-                    // 获取method参数类型名称
-                    String typeName = parameters[i].getType().getName();
+                        Object parameterObj = parameterValue;
 
-                    if (parameterValue != null) {
-                        if ("java.lang.Integer".equals(typeName)) {
+                        if (parameterObj != null) {
+                            if ("java.lang.Integer".equals(typeName)) {
+                                parameterObj = Integer.parseInt(parameterValue);
+                            }
                         }
+                        parametersValue[i] = parameterObj;
                     }
-
-                    if (parameterValue != null) {
-                        parametersValue[i] = parameterValue;
-                    }
-
                 }
 
                 try {
@@ -117,7 +116,9 @@ public class DispatcherServlet extends ViewBaseServlet {
 
                     String returnStr = (String) returnObj;
                     if (returnStr.startsWith("redirect:")) {
-                        response.sendRedirect(returnStr.substring("redirect".length()));
+
+                        String substring = returnStr.substring("redirect:".length());
+                        response.sendRedirect(substring);
                     } else {
                         super.processTemplate(returnStr, request, response);
                     }

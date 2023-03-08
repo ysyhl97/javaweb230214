@@ -10,8 +10,12 @@
 			我的好友<br/>
 
 			<ul>
-				<li th:if="${#lists.isEmpty(session.userBasic.friendList)}">一个好友也没有</li>
-				<li th:unless="${#lists.isEmpty(session.userBasic.friendList)}" th:each="friend : ${session.userBasic.friendList}" th:text="${friend.nickName}">一个好友也没有</li>
+<!--				<li th:text="${session.friend}"></li>-->
+				<li th:if="${#lists.isEmpty(session.friend.friendList)}">一个好友也没有</li>
+				<li th:unless="${#lists.isEmpty(session.friend.friendList)}" th:each="friend : ${session.friend.friendList}" >
+					<!-- 跳转其他空间相当是更新对应数据-->
+					<a th:href="@{|user.do?operate=friend&id=${friend.id}|}" th:text="${friend.nickName}" target="_top"></a>
+				</li>
 			</ul>
 
 		</div>

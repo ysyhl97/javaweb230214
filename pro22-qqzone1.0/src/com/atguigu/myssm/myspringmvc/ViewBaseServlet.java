@@ -2,6 +2,7 @@ package com.atguigu.myssm.myspringmvc;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -50,6 +51,9 @@ public class ViewBaseServlet extends HttpServlet {
         templateResolver.setCharacterEncoding("utf-8");
         // 4.创建模板引擎对象
         templateEngine = new TemplateEngine();
+        // thymeleaf支持使用java8 LocalDateTime格式
+        templateEngine.addDialect(new Java8TimeDialect());
+
         // 5.给模板引擎对象设置模板解析器
         templateEngine.setTemplateResolver(templateResolver);
     }
