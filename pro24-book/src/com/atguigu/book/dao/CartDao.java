@@ -1,6 +1,7 @@
 package com.atguigu.book.dao;
 
 import com.atguigu.book.pojo.CartItem;
+import com.atguigu.book.pojo.User;
 
 import java.util.List;
 
@@ -16,12 +17,14 @@ import java.util.List;
 
 public interface CartDao {
 
-   void insertCart(CartItem cartItem);
-   void deleteCart(Integer id);
+   void insertCartItem(CartItem cartItem);
+   void deleteCartItem(Integer id);
+   void updateCartItem(CartItem cartItem);
 
-   CartItem selectCartByBookId(CartItem cartItem);
+   /**
+    * 查询指定用户的所有购物车项
+    * @return
+    */
+   List<CartItem> getCartItemList(User user);
 
-   void updateCartBuyCount(Integer bookId);
-
-   List<CartItem> selectCartByUserBean(Integer userBean);
 }

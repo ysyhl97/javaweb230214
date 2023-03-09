@@ -2,6 +2,7 @@ package com.atguigu.book.dao.impl;
 
 import com.atguigu.book.dao.CartDao;
 import com.atguigu.book.pojo.CartItem;
+import com.atguigu.book.pojo.User;
 import com.atguigu.myssm.basedao.BaseDAO;
 
 import java.util.List;
@@ -17,28 +18,25 @@ import java.util.List;
  */
 
 public class CartDaoImpl extends BaseDAO<CartItem> implements CartDao {
-   @Override
-   public void insertCart(CartItem cartItem) {
-      executeUpdate("insert into t_cart_item values (0,?,?,?)",cartItem.getBook().getId(),cartItem.getBuyCount(),cartItem.getUserBean().getId());
-   }
+    @Override
+    public void insertCartItem(CartItem cartItem) {
+        executeUpdate("insert into t_cart_item values (0,?,?,?)", cartItem.getBook().getId(), cartItem.getBuyCount(), cartItem.getUserBean().getId());
+    }
 
-   @Override
-   public void deleteCart(Integer id) {
+    @Override
+    public void deleteCartItem(Integer id) {
 
-   }
+    }
 
-   @Override
-   public CartItem selectCartByBookId(CartItem cartItem) {
-      return load("select * from t_cart_item where book=? and userBean=?",cartItem.getBook().getId(),cartItem.getUserBean().getId());
-   }
 
-   @Override
-   public void updateCartBuyCount(Integer bookId) {
-      executeUpdate("update t_cart_item set buyCount = buyCount + 1 where book = ?",bookId);
-   }
+    @Override
+    public void updateCartItem(CartItem cartItem) {
+        executeUpdate("update t_cart_item set buyCount = ? where book = ?", cartItem.getBuyCount(), cartItem.getBook().getId());
+    }
 
-   @Override
-   public List<CartItem> selectCartByUserBean(Integer userBean) {
-      return executeQuery("select * from t_cart_item where userBean = ?",userBean);
-   }
+    @Override
+    public List<CartItem> getCartItemList(User user) {
+        return executeQuery("select * from t_cart_item where userBean = ?", user.getId());
+    }
+
 }

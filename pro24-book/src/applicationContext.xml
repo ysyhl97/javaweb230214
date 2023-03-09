@@ -27,6 +27,7 @@
     <bean id="page" class="com.atguigu.myssm.myspringmvc.PageController"></bean>
     <bean id="user" class="com.atguigu.book.controller.UserController">
         <property name="userService" ref="userService"></property>
+        <property name="cartService" ref="cartService"></property>
     </bean>
     <bean id="book" class="com.atguigu.book.controller.BookController">
         <property name="bookService" ref="bookService"></property>

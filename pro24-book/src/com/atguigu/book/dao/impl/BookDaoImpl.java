@@ -21,7 +21,7 @@ import static com.alibaba.druid.util.JdbcUtils.executeQuery;
 public class BookDaoImpl extends BaseDAO<Book> implements BookDao {
    @Override
    public List<Book> selectBookList() {
-      return executeQuery("select * from t_book");
+      return executeQuery("select * from t_book ");
    }
 
    @Override
