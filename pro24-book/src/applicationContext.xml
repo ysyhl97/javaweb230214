@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans>
+    <!--Dao层-->
+    <bean id="userDao" class="com.atguigu.book.dao.impl.UserDaoImpl"></bean>
+    <bean id="bookDao" class="com.atguigu.book.dao.impl.BookDaoImpl"></bean>
+    <bean id="cartDao" class="com.atguigu.book.dao.impl.CartDaoImpl"></bean>
+
+
+    <!--service层-->
+    <bean id="userService" class="com.atguigu.book.service.impl.UserServiceImpl">
+        <property name="userDao" ref="userDao"></property>
+    </bean>
+    <bean id="bookService" class="com.atguigu.book.service.impl.BookServiceImpl">
+        <property name="bookDao" ref="bookDao"></property>
+    </bean>
+    <bean id="cartService" class="com.atguigu.book.service.impl.CartServiceImpl">
+        <property name="cartDao" ref="cartDao"></property>
+        <property name="bookService" ref="bookService">
+
+        </property>
+    </bean>
+
+
+
+    <!--controller层-->
+    <bean id="page" class="com.atguigu.myssm.myspringmvc.PageController"></bean>
+    <bean id="user" class="com.atguigu.book.controller.UserController">
+        <property name="userService" ref="userService"></property>
+    </bean>
+    <bean id="book" class="com.atguigu.book.controller.BookController">
+        <property name="bookService" ref="bookService"></property>
+    </bean>
+    <bean id="cart" class="com.atguigu.book.controller.CartController">
+        <property name="cartService" ref="cartService"></property>
+    </bean>
+
+</beans>
